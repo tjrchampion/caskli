@@ -1,7 +1,7 @@
 export default {
 
   server: {
-    port: 1337, // default: 3000
+    port: process.env.PORT || 1337, // default: 3000
     host: '0.0.0.0', // default: localhost,
     timing: false
   },

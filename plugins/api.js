@@ -5,6 +5,7 @@ export default (context, inject) => {
 
 const api = {
   async getDate () {
-    return fetch('/api/date');
+    const res = await fetch('/api/date');
+    return await res.json();
   }
 };

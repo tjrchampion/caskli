@@ -10,7 +10,7 @@ export default {
   methods: {
     async fetchDate() {
       const res = await this.$api.getDate();
-      this.$store.dispatch('date/setDate', (await res.json()).date);
+      this.$store.dispatch('date/setDate', res.date);
     }
   }
 };
