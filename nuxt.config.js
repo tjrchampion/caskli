@@ -6,6 +6,10 @@ export default {
     timing: false
   },
 
+  axios: {
+    baseURL: process.env.APP_URL
+  },
+
   css: [
     '~/assets/styles/app.scss'
   ],
