@@ -78,6 +78,7 @@ app.post('/', jsonParser, async (req, res, next)   => {
       return res.status(404).json({
         success: false,
         message: 'We tried to find your URL but were unsuccessful.',
+        dev_message: err
       });
     }
 
