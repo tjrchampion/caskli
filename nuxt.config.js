@@ -7,7 +7,7 @@ export default {
   },
 
   css: [
-    './assets/styles/app.scss'
+    '~/assets/styles/app.scss'
   ],
   
   plugins: [

@@ -1,0 +1,55 @@
+#shtn {
+    position: fixed;
+    right: 0;
+    width: 100%;
+    background: white;
+    padding: 1rem;
+    z-index: 200;
+    display: flex;
+    flex-direction: row;
+    div { 
+        position: relative;
+        display: flex; 
+        flex: 1 1 auto; 
+        flex-direction: column;
+        &:first-child {
+            max-width: 60px;
+        }
+        &:nth-child(2) {
+            &:before {
+                content: '';
+                position: absolute;
+                right: 0;
+                width: 3px;
+                height: 100%;
+                background: #c0c0c0;
+            }
+        }
+        &:focus-within {
+            &:before {
+                content: '';
+                position: absolute;
+                left: -3px; 
+                width: 3px;
+                height: 100%;
+                background: #6a5acd;
+            }
+        }
+        input {
+            &:last-child {
+                border-left: 0;
+            }
+        }
+    }
+    button {
+        background: #c0c0c0;
+        border: 0;
+        padding: 0 0.75rem;
+        transition: all 0.3s;
+        &:focus { outline: none; }
+        &.btnActive {
+            background: slateblue;
+            &:hover { background: rgb(126, 110, 235); }
+        }
+    }
+}
