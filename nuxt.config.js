@@ -6,13 +6,22 @@ export default {
     timing: false
   },
 
+  css: [
+    './assets/styles/app.scss'
+  ],
+  
   plugins: [
     '~/plugins/api.js',
     //mixins
-    '~/plugins/mixins/date.js'
+    '~/plugins/mixins/urls.js',
   ],
 
   serverMiddleware: [
-    {path: '/api', handler: '~/api/index.js'}
+    {path: '/api', handler: '~/api/index.js'},
+    //{path: '/', handler: '~/middleware/redirect.js'},
+  ],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/toast'
   ]
 }

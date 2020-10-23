@@ -5,7 +5,7 @@ import ClientOnly from 'vue-client-only'
 import NoSsr from 'vue-no-ssr'
 import { createRouter } from './router.js'
 import NuxtChild from './components/nuxt-child.js'
-import NuxtError from './components/nuxt-error.vue'
+import NuxtError from '../layouts/error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
 import { setContext, getLocation, getRouteData, normalizeError } from './utils'
@@ -13,8 +13,10 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
+import nuxt_plugin_toast_68280418 from 'nuxt_plugin_toast_68280418' // Source: ./toast.js (mode: 'client')
+import nuxt_plugin_axios_00889d76 from 'nuxt_plugin_axios_00889d76' // Source: ./axios.js (mode: 'all')
 import nuxt_plugin_api_785206da from 'nuxt_plugin_api_785206da' // Source: ../plugins/api.js (mode: 'all')
-import nuxt_plugin_date_1cd86782 from 'nuxt_plugin_date_1cd86782' // Source: ../plugins/mixins/date.js (mode: 'all')
+import nuxt_plugin_urls_868b4ae8 from 'nuxt_plugin_urls_868b4ae8' // Source: ../plugins/mixins/urls.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -196,12 +198,20 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
+  if (process.client && typeof nuxt_plugin_toast_68280418 === 'function') {
+    await nuxt_plugin_toast_68280418(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_axios_00889d76 === 'function') {
+    await nuxt_plugin_axios_00889d76(app.context, inject)
+  }
+
   if (typeof nuxt_plugin_api_785206da === 'function') {
     await nuxt_plugin_api_785206da(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_date_1cd86782 === 'function') {
-    await nuxt_plugin_date_1cd86782(app.context, inject)
+  if (typeof nuxt_plugin_urls_868b4ae8 === 'function') {
+    await nuxt_plugin_urls_868b4ae8(app.context, inject)
   }
 
   // Lock enablePreview in context
