@@ -90,7 +90,6 @@ app.post('/', jsonParser, async (req, res, next)   => {
 
 });
 
-//return a specific url
 app.get('/:id', (req, res, next) => {
   connection.query('SELECT * FROM urls WHERE slug = ?',[req.params.id], (err, rows, fields) => {
     if (!err) {
@@ -102,7 +101,6 @@ app.get('/:id', (req, res, next) => {
     }
   })
 });
-
 
 app.get('/', (req, res, next) => {
   connection.query('SELECT * FROM urls ORDER BY created_at DESC', (err, rows, fields) => {
