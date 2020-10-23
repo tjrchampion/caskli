@@ -10,6 +10,7 @@ const mysql = require('mysql');
 const { response } = require('express');
 const puppeteer = require('puppeteer');
 const appendHttp = require('./append-http');
+const path = require('path');
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -57,7 +58,9 @@ app.post('/', jsonParser, async (req, res, next)   => {
       });
       const page = await browser.newPage();
       await page.goto(appended, { waitUntil: ['load', 'networkidle0'] });
-      await page.screenshot({path: `static/thumbs/${nanid}.png`});
+      await page.screenshot({path: path.join(__dirname, '../static/thumbs', `${nanid}.png`)});
+
+     console.log();
 
       await browser.close();
 
