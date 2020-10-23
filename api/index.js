@@ -46,6 +46,7 @@ app.post('/', jsonParser, async (req, res, next)   => {
     try {
 
       const browser = await puppeteer.launch({
+        headless: false,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
@@ -57,7 +58,7 @@ app.post('/', jsonParser, async (req, res, next)   => {
         }
       });
       const page = await browser.newPage();
-      await page.goto(appended, { waitUntil: ['load', 'networkidle0'] });
+      await page.goto(appended, { waitUntil: ['load', 'networkidle0'], timeout: 0 });
       await page.screenshot({path: path.join(__dirname, '../static/thumbs', `${nanid}.png`)});
 
      console.log();
