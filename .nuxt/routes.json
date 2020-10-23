@@ -3,12 +3,14 @@
     "name": "index",
     "path": "/",
     "component": "/Users/tomchampion/Development/Web/geektu.be/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_1c4df18e"
   },
   {
     "name": "id",
     "path": "/:id",
     "component": "/Users/tomchampion/Development/Web/geektu.be/pages/_id.vue",
-    "chunkName": "pages/_id"
+    "chunkName": "pages/_id",
+    "_name": "_677cf83e"
   }
 ]
