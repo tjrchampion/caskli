@@ -45,6 +45,10 @@ app.post('/', jsonParser, async (req, res, next)   => {
     try {
 
       const browser = await puppeteer.launch({
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+        ],
         defaultViewport: {
             width: 800,
             height: 500,
