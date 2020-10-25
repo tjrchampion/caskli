@@ -24,7 +24,7 @@
     </div>
 
     <div class="container" v-if="urls.length > 0">
-      <div class="grid">
+      <div class="grid" @scroll="handleScroll">
         <div class="grid__item" v-for="(url, index) in urls" :key="index">
           <div v-if="!url.isLoading" class="url link__item">
             <!-- :style="`background: #${parse(url.meta).colour}`" -->
@@ -57,9 +57,9 @@
           </div>
         </div>
       </div>
-      <div class="load__more" v-if="page !== pageCount || this.urls.length >= 8">
+      <!-- <div class="load__more" v-if="page !== pageCount || this.urls.length >= 8">
         <button @click="get" class="btn__load" :class="{disabled: page === pageCount}" :disabled="page === pageCount">Brew more URLs</button>
-      </div>
+      </div> -->
     </div>
 
   </div>
@@ -146,13 +146,15 @@ export default {
 
 
     async get(){
+      let page = this.page;
       await this.$axios.$get('/api', {
         params: {
-          page: this.page += 1,
+          page: page +=1,
         }
       }).then((response) => {
         this.$store.dispatch('setUrls', response.urls);
-        this.$store.dispatch('setPage', this.page += 1);
+        this.$store.dispatch('setPage', page);
+        this.bottom = false;
       }).catch(e => {
         console.log(e)
       });
@@ -258,9 +260,10 @@ export default {
     },
 
     async updateClick(data) {
+      let windowReference = window.open();
       await this.$axios.post(`/api/${data.slug}`, this.parse(data.meta)).then(response => {
         this.$store.dispatch('setUrlCount', data);
-        window.open(`/${data.slug}`, '__blank');
+        windowReference.location = `/${data.slug}`;
       }).catch(error => {
         console.log(error);
       });
@@ -268,7 +271,23 @@ export default {
 
     setFocus(focus) {
       this.isFocused = focus;
+    },
+
+    handleScroll(el) {
+      if((el.srcElement.offsetHeight + el.srcElement.scrollTop) >= el.srcElement.scrollHeight) {
+        if(this.page !== this.pageCount ) {
+          this.get();
+        } else {
+          this.$toasted.clear();       
+          this.$toasted.info('No more brews...', {
+            theme: "outline", 
+            position: "bottom-center", 
+            duration : 5000
+          });  
+        }
+      }
     }
+  
   },
   
 };
