@@ -41,25 +41,6 @@ input {
         transition: 0.3s all;
     }
 }
-
-.nlb {
-    -webkit-border-top-right-radius: 0.5rem !important;
-    -webkit-border-bottom-right-radius: 0.5rem !important;
-    -moz-border-radius-topright: 0.5rem !important;
-    -moz-border-radius-bottomright: 0.5rem !important;
-    border-top-right-radius: 0.5rem !important;
-    border-bottom-right-radius: 0.5rem !important;
-}
-
-.nrb {
-    -webkit-border-top-left-radius: 0.5rem !important;
-    -webkit-border-bottom-left-radius: 0.5rem !important;
-    -moz-border-radius-topleft: 0.5rem !important;
-    -moz-border-radius-bottomleft: 0.5rem !important;
-    border-top-left-radius: 0.5rem !important;
-    border-bottom-left-radius: 0.5rem !important;
-}
-
 img {
     max-width: 100%;
     height: auto;
@@ -75,116 +56,123 @@ img {
 }
 
 .container {
-    max-width: 100%;
     margin: 0 auto;
     padding: 1rem;
     overflow:hidden;
-    // @media(min-width: 765px) {
-    //     width: 1575px;
-    // }
+    top: 5rem;
+    position: relative;
+}
+
+.load__more {
+    position: relative;
+    bottom: 0;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem;
+    .btn__load {
+        &.disabled { opacity: .5; }
+        background: slateblue;
+        border: 0;
+        text-align: center;
+        color: white;
+        font-size: 1rem;
+        padding: 0.75rem 1rem;
+    }
 }
 
 .grid {
-    position: relative;
-    display: grid;
-    grid-auto-flow: dense;
-    grid-gap: 30px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-template-rows: repeat(5, 125px);
-    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    //grid-auto-flow: dense;
+    //grid-gap: 30px;
+    //grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    //grid-template-rows: repeat(20, 125px);
     overflow: auto;
+    margin-bottom: 3rem;
     &__item {
-        &:nth-child(3n) {
-            grid-column: span 2; // Tells item to span rows
-            grid-row: span 2;
-        }
         .link__item {
-            position: relative;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            height: 100%;
-            flex: 1 1 0;
-            //min-height: 150px;
+            flex-direction: row;
+            justify-content: space-between;
             text-decoration: none;
             overflow: hidden;
-            transition: 0.3s all; 
-            &:after {
-                content: '';
-                position: absolute;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background: rgb(106,90,205);
-                background: linear-gradient(0deg, rgba(106,90,205,1) 0%, transparent);
-            }
-            .responsive-img {
-                position: absolute;
-                top: 0;
-                object-position: center;
-            }
+            transition: 0.3s all;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 0.50rem 0;
+            
+            // .responsive-img {
+            //     object-position: center;
+            //     width:10%;
+            // }
 
             .title {
                 display: flex;
+                flex: 1 1 0;
                 flex-direction: row;
-                justify-content: space-between;
-                padding:1rem; 
-                z-index: 100; 
-                //background: rgba(106,90,205, 0.8);
-                color: white;
-                //margin-bottom: -3rem;
+                justify-content: flex-start;
+                color: #444;
                 transition: all 0.3s;
                 word-wrap: none;
-                .link__info {
+                .link__count {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
+                    outline: none;
+                    transition: all 0.3s;
+                    min-width:3rem;
+                    min-height:3rem;
+                    margin-right: 2rem;
+                    text-align: center;
+                    font-size: 1.5rem;
                 }
-                .link__actions {
+                .link__info {
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
+                    width: 50%;
+                    p { 
+                        color: #c0c0c0; width: 100%; 
+                        white-space: nowrap;
+                        overflow: hidden;
+                        display: inline-block;
+                        text-overflow: ellipsis;
+                    }
                 }
+
+            }
+            .link__actions {
+                display: flex;
+                flex-direction: row;
                 .external {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     outline: none;
                     padding: 0 0 0 .50rem;
+                    transition: all 0.3s;
                     .external__icon {
-                        display: flex;
-                        background: transparent;
-                        border: 2px solid white;
-                        color: white;
-                        padding: 0.45rem;
-                        border-radius: 50%;
-                    }
-                    &:hover {
                         cursor: pointer;
-                        .external__icon {
-                            background: white;
-                            color: slateblue;
+                        display: flex;
+                        color: slateblue;
+                        padding: 0.45rem;
+                        &:hover {
+                            background: slateblue;
+                            color: white;
                         }
                     }
                 }
             }
 
-            &:before {
-                content:'';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(225,255,255, 0.2);
-                z-index: 0;
-            }
         }
+
     }
 }
 
-.clip-path {
-    clip-path: circle(30px at center);
-}
+// .clip-path {
+//     clip-path: circle(30px at center);
+// }
 
 .invalid {
     &:before {
@@ -212,6 +200,7 @@ img {
 
 
 .isloading {
+    position: relative;
     background: #f1f1f1;
     height: 100%;
     padding: 1rem;
@@ -229,7 +218,7 @@ img {
         animation-iteration-count: infinite;
         animation-name: load;
         animation-timing-function: linear;
-        background: linear-gradient(to right, transparent 0%, #fff 50%, transparent 100%);
+        background: linear-gradient(to right, transparent 0%, #fff 50%, transparent 50%);
     }
 }
 

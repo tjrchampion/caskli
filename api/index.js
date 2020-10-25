@@ -11,6 +11,7 @@ const { response } = require('express');
 const puppeteer = require('puppeteer');
 const appendHttp = require('./append-http');
 const path = require('path');
+const { json } = require('body-parser');
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -45,27 +46,27 @@ app.post('/', jsonParser, async (req, res, next)   => {
 
     try {
 
-      const browser = await puppeteer.launch({
-        headless: true,
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-        ],
-        defaultViewport: {
-            width: 800,
-            height: 500,
-            isLandscape: true
-        }
-      });
-      const page = await browser.newPage();
-      await page.goto(appended, { waitUntil: ['load', 'networkidle0'], timeout: 0 });
-      await page.screenshot({path: path.join(__dirname, '../static/thumbs', `${nanid}.png`)});
+      // const browser = await puppeteer.launch({
+      //   headless: true,
+      //   args: [
+      //     '--no-sandbox',
+      //     '--disable-setuid-sandbox',
+      //   ],
+      //   defaultViewport: {
+      //       width: 800,
+      //       height: 500,
+      //       isLandscape: true
+      //   }
+      // });
+      // const page = await browser.newPage();
+      // await page.goto(appended, { waitUntil: ['load', 'networkidle0'], timeout: 0 });
+      // await page.screenshot({path: path.join(__dirname, '../static/thumbs', `${nanid}.png`)});
 
-     console.log();
+      // await browser.close();
 
-      await browser.close();
+      // meta.file = `${nanid}.png`; 
 
-      meta.file = `${nanid}.png`; 
+      meta.clicks = 0;
 
       let metaJson = JSON.stringify(meta);
 
@@ -106,10 +107,42 @@ app.get('/:id', (req, res, next) => {
   })
 });
 
+app.post('/:id', jsonParser, async (req, res, next)   => {
+
+  let meta  = req.body;
+
+  meta.clicks += 1;
+
+  let metaJson = JSON.stringify(meta);
+
+  connection.query('UPDATE urls SET meta = ? WHERE slug = ?', [metaJson, req.params.id], (err, rows, fields) => {
+    if (!err) {
+      res.status(200).json({
+        success: true
+      });
+    } else {
+      next(err);
+    }
+  })
+
+})
+
 app.get('/', (req, res, next) => {
   connection.query('SELECT * FROM urls ORDER BY created_at DESC', (err, rows, fields) => {
     if (!err) {
-      res.status(200).json(rows);
+
+      const pageCount = Math.ceil(rows.length / 8);
+      let page = parseInt(req.query.page);
+      if (!page) { page = 1;}
+      if (page > pageCount) {
+        page = pageCount
+      }
+
+      res.status(200).json({
+        "page": page,
+        "pageCount": pageCount,
+        "urls": rows.slice(page * 8 - 8, page * 8)
+      });
     } else {
       next(err);
     }

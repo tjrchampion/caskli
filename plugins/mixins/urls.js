@@ -9,6 +9,8 @@ const Date = {
         ...mapGetters({
           appUrl: 'getAppUrl',
           urls: 'getUrls',
+          page: 'getPage',
+          pageCount: 'getPageCount',
           short: 'getShort',
           banned: 'getBanned',
           loader: 'loader',

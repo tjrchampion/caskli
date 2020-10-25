@@ -3,11 +3,16 @@ import axios from 'axios';
 export const state = () => ({
   appUrl: process.env.APP_URL,
   urls: [],
+  page: 1,
+  pageCount: null,
   banned: [],
   short: [
     'bit.ly',
     'goo.gl',
     'tinyurl.com',
+    'shorturl.at',
+    'free-url-shortener.rb.gy',
+    'rebrandly.com',
     'ow.ly',
     'su.pr',
     'is.gd',
@@ -17,6 +22,8 @@ export const state = () => ({
     'moourl.com',
     'l.gg',
     'catchylink.com',
+    'branch.io',
+    'yourls.org',
     'short.nr',
     'para.pt',
     'twurl.nl',
@@ -30,25 +37,49 @@ export const mutations = {
   SET_URL(state, url) {
     state.urls.unshift(url);
   },
+  SET_PAGE(state, page) {
+    state.page = page;
+  },
+  SET_PAGE_COUNT(state, count) {
+    state.pageCount = count;
+  },
   SET_URLS(state, urls) {
-    state.urls = urls;
+    state.urls.push.apply(state.urls, urls);
   },
   CLEAR_LOADER(state) {
     state.urls.shift();
   },
   SET_BANNED(state, banned) {
     state.banned = banned;
+  },
+  SET_URL_COUNT(state, data) {
+    return state.urls.find(url => {
+      if(url.id === data.id) {
+        let meta = JSON.parse(url.meta);
+        meta.clicks += 1;
+        url.meta = JSON.stringify(meta);
+      }
+    });
+
   }
 }
 
 export const actions = {
   nuxtServerInit ({ commit }, { req }) {
 
-    return this.$axios.get('/api').then((response) => {
-      commit('SET_URLS', response.data);
+    return this.$axios.get('/api', {
+      params: {
+        page: state.page,
+      },
+    }).then((response) => {
+
+      commit('SET_URLS', response.data.urls);
+      commit('SET_PAGE_COUNT', response.data.pageCount);
+
       return this.$axios.get('https://raw.githubusercontent.com/bryput/porn-site-list/master/sites.json').then((response) => {
         commit('SET_BANNED', response.data);
       });
+
     }).catch((error) => {
       console.warn('probably an issue connecting to the API');
       console.warn(error);
@@ -60,11 +91,17 @@ export const actions = {
   setUrls({ commit }, urls) {
     commit('SET_URLS', urls);
   },
+  setPage({ commit }, page) {
+    commit('SET_PAGE', page);
+  },
   clearLoader({commit}) {
     commit('CLEAR_LOADER');
   },
   setBanned({ commit }, banned) {
     commit('SET_BANNED', banned);
+  },
+  setUrlCount({ commit }, data) {
+    commit('SET_URL_COUNT', data);
   }
 }
 
@@ -77,6 +114,12 @@ export const getters = {
   },
   getShort(state) {
     return state.short;
+  },
+  getPage(state) {
+    return state.page;
+  },
+  getPageCount(state) {
+    return state.pageCount;
   },
   getBanned(state) {
     return state.banned;

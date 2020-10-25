@@ -1,5 +1,7 @@
 <template>
   <div id="geektube">
+
+
     <form @submit.prevent="submit" id="shtn">
         <div class="gt-logo">
           <img src="~/assets/images/gt.svg" alt="geektu.be">
@@ -8,7 +10,7 @@
           <input type="text" ref="brewname" class="input" v-model="form.slug" id="slug" name="slug" placeholder="Give your brew a name (Can be left empty)">
         </div>
         <div :class="{ invalid: isNotUrl && isFocused}">
-          <input class="input" @focusin="setFocus(true)" @focusout="setFocus(false)" v-model="form.url" id="url" name="url" placeholder="Brew yourself a short URL">
+          <input class="input" @focusin="setFocus(true)" @focusout="setFocus(false)" v-model="form.url" id="url" name="url" placeholder="Brew URL">
         </div>
         <button type="submit" :disabled="disabled == true" :class="{ btnActive: !isNotUrl && isFocused}">
           <plus-icon size="3x" :style="{color: 'white'}"></plus-icon>
@@ -26,30 +28,37 @@
         <div class="grid__item" v-for="(url, index) in urls" :key="index">
           <div v-if="!url.isLoading" class="url link__item">
             <!-- :style="`background: #${parse(url.meta).colour}`" -->
-            <img :src="`/thumbs/${parse(url.meta).file}`" class="responsive-img" title="">
             <article class="title">
-              <div class="link__info">
-                <h4>{{url.slug}}</h4>
+              <div class="link__count" :style="`border:3px solid #${parse(url.meta).colour}; color: #${parse(url.meta).colour};`">
+                {{parse(url.meta).clicks}}
               </div>
-
-              <div class="link__actions">
-                <button class="external" style="background:none; border:none;" :disabled="copied == true" @click="copy(url.slug)">
-                  <span class="external__icon">
-                    <copy-icon size="1x"></copy-icon>
-                  </span>
-                </button>
-                <a class="external" target="_blank" :href="`/${url.slug}`">
-                  <span class="external__icon">
-                    <external-link-icon size="1x"></external-link-icon>
-                  </span>
-                </a>
+              <div class="link__info">
+                <!-- <img :src="`/thumbs/${parse(url.meta).file}`" class="responsive-img" title=""> -->
+                <h3>{{url.slug}}</h3>
+                <p>{{url.url}}</p>
               </div>
             </article>
+
+            <div class="link__actions">
+              <a href="/" class="external" style="background:none; border:none;" :disabled="copied == true" @click.prevent="copy(url.slug)">
+                <span class="external__icon">
+                  <copy-icon size="1.3x"></copy-icon>
+                </span>
+              </a>
+              <a href="/" class="external" target="_blank" @click.prevent="updateClick(url)">
+                <span class="external__icon">
+                  <external-link-icon size="1.3x"></external-link-icon>
+                </span>
+              </a>
+            </div>
           </div>
           <div class="isloading" v-if="url.isLoading">
               Generating...
           </div>
         </div>
+      </div>
+      <div class="load__more" v-if="page !== pageCount || this.urls.length >= 8">
+        <button @click="get" class="btn__load" :class="{disabled: page === pageCount}" :disabled="page === pageCount">Brew more URLs</button>
       </div>
     </div>
 
@@ -74,6 +83,7 @@ export default {
       isFocused: false,
       disabled: false,
       copied: false,
+      bottom: false,
       form: {
         slug: '',
         url: ''
@@ -110,7 +120,7 @@ export default {
 
       let url = `${this.appUrl}/${slug}`;
       this.copied = !this.copied;
-      
+
       try {
         const el = document.createElement('textarea');
         el.value = url;
@@ -133,6 +143,21 @@ export default {
         console.log(err);
       }
     },
+
+
+    async get(){
+      await this.$axios.$get('/api', {
+        params: {
+          page: this.page += 1,
+        }
+      }).then((response) => {
+        this.$store.dispatch('setUrls', response.urls);
+        this.$store.dispatch('setPage', this.page += 1);
+      }).catch(e => {
+        console.log(e)
+      });
+    },
+
     async submit() {
 
       if(this.form.url == '') {
@@ -156,6 +181,7 @@ export default {
 
       if(short) {
         this.disabled = !this.disabled;
+        this.form.url = '';
         this.$toasted.error('We can\'t brew an already shortened URL', {
           theme: "outline", 
           position: "bottom-center", 
@@ -164,10 +190,9 @@ export default {
         return;
       }
 
-
-
       if(banned) {
         this.disabled = !this.disabled;
+        this.form.url = '';
         this.$toasted.error('We don\'t brew dirty links...', {
           theme: "outline", 
           position: "bottom-center", 
@@ -227,6 +252,16 @@ export default {
       });
       
     },
+
+    async updateClick(data) {
+      await this.$axios.post(`/api/${data.slug}`, this.parse(data.meta)).then(response => {
+        this.$store.dispatch('setUrlCount', data);
+        window.open(`/${data.slug}`, '__blank');
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+
     setFocus(focus) {
       this.isFocused = focus;
     }

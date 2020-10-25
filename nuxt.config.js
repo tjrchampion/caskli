@@ -52,9 +52,10 @@ export default {
   ],
   
   plugins: [
-    '~/plugins/api.js',
+    {src: '~/plugins/api.js'},
+    {src: '~/plugins/scroll.js', ssr: false},
     //mixins
-    '~/plugins/mixins/urls.js',
+    {src: '~/plugins/mixins/urls.js'}
   ],
 
   serverMiddleware: [
