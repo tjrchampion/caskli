@@ -164,6 +164,10 @@ export default {
         return
       }
 
+      let slug = this.form.slug.replace(/\s/g, '');
+
+      this.form.slug = slug;
+
       if(this.form.slug.length > 12) {
         this.$toasted.error('Brew name can\'t be more than 12 characters', {
           theme: "outline", 

@@ -116,6 +116,7 @@ img {
                 color: #444;
                 transition: all 0.3s;
                 word-wrap: none;
+                overflow:hidden;
                 .link__count {
                     display: flex;
                     flex-direction: column;
