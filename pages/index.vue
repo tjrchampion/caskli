@@ -24,7 +24,7 @@
     </div>
 
     <div class="container" v-if="urls.length > 0">
-      <div class="grid" @scroll="handleScroll">
+      <div class="grid" ref="grid" @scroll="handleScroll">
         <div class="grid__item" v-for="(url, index) in urls" :key="index">
           <div v-if="!url.isLoading" class="url link__item">
             <!-- :style="`background: #${parse(url.meta).colour}`" -->
@@ -56,6 +56,7 @@
               Generating...
           </div>
         </div>
+        <button v-if="!canScroll && page !== pageCount" class="btn__load" @click="get">Get more brews</button>
       </div>
     </div>
 
@@ -81,6 +82,7 @@ export default {
       disabled: false,
       copied: false,
       bottom: false,
+      canScroll: false,
       form: {
         slug: '',
         url: ''
@@ -90,6 +92,7 @@ export default {
 
   mounted() {
     this.focusInput();
+    this.canScroll = this.$refs.grid.scrollHeight > this.$refs.grid.clientHeight;
   },
 
   filters: {
