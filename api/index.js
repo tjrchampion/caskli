@@ -131,7 +131,7 @@ app.get('/', (req, res, next) => {
   connection.query('SELECT * FROM urls ORDER BY created_at DESC', (err, rows, fields) => {
     if (!err) {
 
-      const pageCount = Math.ceil(rows.length / 8);
+      const pageCount = Math.ceil(rows.length / 10);
       let page = parseInt(req.query.page);
       if (!page) { page = 1;}
       if (page > pageCount) {
@@ -141,7 +141,7 @@ app.get('/', (req, res, next) => {
       res.status(200).json({
         "page": page,
         "pageCount": pageCount,
-        "urls": rows.slice(page * 8 - 8, page * 8)
+        "urls": rows.slice(page * 10 - 10, page * 10)
       });
     } else {
       next(err);

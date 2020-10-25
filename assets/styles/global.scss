@@ -84,7 +84,9 @@ img {
 .grid {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(100% - 5rem);
+    position: relative;
+    top: 5rem;
 
     //grid-auto-flow: dense;
     //grid-gap: 30px;

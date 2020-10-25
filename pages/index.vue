@@ -57,9 +57,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="load__more" v-if="page !== pageCount || this.urls.length >= 8">
-        <button @click="get" class="btn__load" :class="{disabled: page === pageCount}" :disabled="page === pageCount">Brew more URLs</button>
-      </div> -->
     </div>
 
   </div>
