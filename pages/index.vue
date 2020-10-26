@@ -23,7 +23,7 @@
       </span>
     </div>
 
-    <div class="container" v-if="urls.length > 0">
+    <div class="container">
       <div class="grid" ref="grid" @scroll="handleScroll">
         <div class="grid__item" v-for="(url, index) in urls" :key="index">
           <div v-if="!url.isLoading" class="url link__item">
@@ -56,7 +56,7 @@
               Generating...
           </div>
         </div>
-        <button v-if="!canScroll && page !== pageCount" class="btn__load" @click="get">Get more brews</button>
+        <button v-if="!canScroll && page !== pageCount && urls.length > 10" class="btn__load" @click="get">Get more brews</button>
       </div>
     </div>
 
@@ -145,6 +145,20 @@ export default {
     },
 
 
+    async exists(slug) {
+  
+      try {
+       let { data } = await this.$axios.$get(`/api/${slug}`);
+        if(data.length > 0) {
+          return true;
+        } 
+        return false;
+      } catch(err) {
+        console.log(err)
+      }
+    
+    },
+
     async get(){
       let page = this.page;
       await this.$axios.$get('/api', {
@@ -176,6 +190,7 @@ export default {
           position: "bottom-center", 
           duration : 5000
         });
+        this.disabled = false;
         return;
       }
 
@@ -207,66 +222,68 @@ export default {
         return;
       }
 
-      let slugExists = this.urls.find(o => o.slug === this.form.slug);
-      if(slugExists) {
-        this.disabled = !this.disabled;
-        this.$toasted.error('This brew name has been used', {
-          theme: "outline", 
-          position: "bottom-center", 
-          duration : 5000
-        });
-        return;
-      }
+      this.exists(slug).then(res => {
+        if(res) {
+          this.disabled = !this.disabled;
+          this.$toasted.clear();
+          this.$toasted.error('Brew name already exists', {
+            theme: "outline", 
+            position: "bottom-center", 
+            duration : 5000
+          });
+          return true;
+        } else {
 
-      if(!this.form.url.match(this.pattern)) {
-        this.$toasted.error('Have you tried brewing a valid URL?', {
-          theme: "outline", 
-          position: "bottom-center", 
-          duration : 5000
-        });
-        return
-      }
+          if(!this.form.url.match(this.pattern)) {
+            this.$toasted.error('Have you tried brewing a valid URL?', {
+              theme: "outline", 
+              position: "bottom-center", 
+              duration : 5000
+            });
+            return
+          }
 
-      this.$store.dispatch('setUrl', this.loader);
-      this.form.meta = {
-        colour: Math.floor(Math.random()*16777215).toString(16)
-      };
+          this.$store.dispatch('setUrl', this.loader);
 
-      await this.$axios.post('/api', this.form).then(response => {
-        this.$store.dispatch('clearLoader');
-        this.$store.dispatch('setUrl', response.data);
-        this.form.slug = '';
-        this.form.url  = '';
-        this.disabled = !this.disabled;
+          this.form.meta = {
+            colour: Math.floor(Math.random()*16777215).toString(16)
+          };
 
-        this.$toasted.success(response.data.message, {
-          theme: "outline", 
-          position: "bottom-center", 
-          duration : 5000
-        });
+          this.$axios.post('/api', this.form).then(response => {
+            this.$store.dispatch('clearLoader');
+            this.$store.dispatch('setUrl', response.data);
+            this.form.slug = '';
+            this.form.url  = '';
+            this.disabled = !this.disabled;
 
-      }).catch(error => {
-        this.disabled = !this.disabled;
-        setTimeout(() => {
-          this.$store.dispatch('clearLoader');
-        }, 2000);
-        this.$toasted.error(error.response.data.message, {
-          theme: "outline", 
-          position: "bottom-center", 
-          duration : 5000
-        });
+            this.$toasted.success(response.data.message, {
+              theme: "outline", 
+              position: "bottom-center", 
+              duration : 5000
+            });
+
+          }).catch(error => {
+            this.disabled = !this.disabled;
+            setTimeout(() => {
+              this.$store.dispatch('clearLoader');
+            }, 2000);
+            this.$toasted.error(error.response.data.message, {
+              theme: "outline", 
+              position: "bottom-center", 
+              duration : 5000
+            });
+          });
+
+        }
+
       });
-      
+
     },
 
     async updateClick(data) {
       let windowReference = window.open();
-      await this.$axios.post(`/api/${data.slug}`, this.parse(data.meta)).then(response => {
-        this.$store.dispatch('setUrlCount', data);
-        windowReference.location = `/${data.slug}`;
-      }).catch(error => {
-        console.log(error);
-      });
+      this.$store.dispatch('setUrlCount', data);
+      windowReference.location = `/${data.slug}`;
     },
 
     setFocus(focus) {

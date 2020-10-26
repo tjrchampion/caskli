@@ -9,7 +9,7 @@ export default {
       const  { data }  = await $axios.$get(`/api/${params.id}`);
       let url = data[0].url;
 
-      await $axios.$post(`/api/${params.id}`, JSON.parse(data[0].meta)).then(response => {
+      await $axios.$put(`/api/${params.id}`, JSON.parse(data[0].meta)).then(response => {
         store.dispatch('setUrlCount', data[0]);
       });
 
@@ -19,4 +19,4 @@ export default {
     }
   }
 }
-</script>
+</script>c

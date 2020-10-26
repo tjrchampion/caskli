@@ -91,6 +91,11 @@ app.post('/', jsonParser, async (req, res, next)   => {
       });
     }
 
+  } else {
+    return res.status(401).json({
+      status: false,
+      message: 'Not a valid brew structure.'
+    })
   }
 
 });
@@ -98,16 +103,16 @@ app.post('/', jsonParser, async (req, res, next)   => {
 app.get('/:id', (req, res, next) => {
   connection.query('SELECT * FROM urls WHERE slug = ?',[req.params.id], (err, rows, fields) => {
     if (!err) {
-      res.end(JSON.stringify({
+      res.status(200).json({
         data: rows
-      }));
+      });
     } else {
       next(err);
     }
   })
 });
 
-app.post('/:id', jsonParser, async (req, res, next)   => {
+app.put('/:id', jsonParser, async (req, res, next)   => {
 
   let meta  = req.body;
 
