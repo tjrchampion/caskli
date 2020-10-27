@@ -1,6 +1,9 @@
+@import "~bootstrap-reboot";
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
 
 @import 'variables.scss';
 @import 'global.scss';
 //components
-@import './components/shtn.scss'
+@import './components/shtn.scss';
+@import './components/login.scss';

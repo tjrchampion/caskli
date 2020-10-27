@@ -1,21 +1,7 @@
 <template>
   <div id="geektube">
 
-
-    <form @submit.prevent="submit" id="shtn">
-        <div class="gt-logo">
-          <img src="~/assets/images/gt.svg" alt="geektu.be">
-        </div>
-        <div>
-          <input type="text" ref="brewname" class="input" v-model="form.slug" id="slug" name="slug" placeholder="Give your brew a name (Can be left empty)">
-        </div>
-        <div :class="{ invalid: isNotUrl && isFocused}">
-          <input class="input" @focusin="setFocus(true)" @focusout="setFocus(false)" v-model="form.url" id="url" name="url" placeholder="Brew URL">
-        </div>
-        <button type="submit" :disabled="disabled == true" :class="{ btnActive: !isNotUrl && isFocused}">
-          <plus-icon size="3x" :style="{color: 'white'}"></plus-icon>
-        </button>
-    </form>
+    <header-bar ref="shtn" :form="form" />
 
     <div class="empty__urls" v-if="urls.length < 1">
       <span>
@@ -64,22 +50,16 @@
 </template>
 
 <script>
-import { PlusIcon, ExternalLinkIcon, CopyIcon, LinkIcon, CoffeeIcon } from 'vue-feather-icons';
 import moment from 'moment';
 import appendHttp from '../api/append-http';
+import HeaderBar from '../components/HeaderBar';
 
 export default {
   components: {
-    PlusIcon,
-    ExternalLinkIcon,
-    CopyIcon,
-    LinkIcon,
-    CoffeeIcon
+    HeaderBar
   },
   data() {
     return {
-      isFocused: false,
-      disabled: false,
       copied: false,
       bottom: false,
       canScroll: false,
@@ -91,8 +71,13 @@ export default {
   },
 
   mounted() {
-    this.focusInput();
     this.canScroll = this.$refs.grid.scrollHeight > this.$refs.grid.clientHeight;
+  },
+
+  created() {
+    this.$bus.$on('submit-brew', () => {
+      this.submit();
+    });
   },
 
   filters: {
@@ -100,22 +85,18 @@ export default {
       return moment(date).format('Do MMMM YYYY');
     }
   },
-  computed: {
-    isNotUrl: function() {
-      if(this.form.url.length >= 1) {
-        return !this.form.url.match(this.pattern);
-      }
-    }
-  },
   methods: {
+
     parse(string) {
       return JSON.parse(string);
     },
+
     focusInput() {
       if(this.urls > 0) {
         this.$refs.brewname.focus();
       }
     },
+
     copy(slug) {
 
       let url = `${this.appUrl}/${slug}`;
@@ -144,14 +125,18 @@ export default {
       }
     },
 
-
     async exists(slug) {
   
       try {
-       let { data } = await this.$axios.$get(`/api/${slug}`);
-        if(data.length > 0) {
-          return true;
-        } 
+        if(slug !== '') {
+
+          let { data } = await this.$axios.$get(`/api/${slug}`);
+        
+          if(data.length > 0) {
+            return true;
+          } 
+
+        }
         return false;
       } catch(err) {
         console.log(err)
@@ -190,18 +175,18 @@ export default {
           position: "bottom-center", 
           duration : 5000
         });
-        this.disabled = false;
+        this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
         return;
       }
 
-      this.disabled = !this.disabled;
+      this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
 
       let host = new URL(appendHttp(this.form.url)).host;
       let banned = this.banned.find(o => o.parent_domain === host);
       let short = this.short.find(o => o === host);
 
       if(short) {
-        this.disabled = !this.disabled;
+        this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
         this.form.url = '';
         this.$toasted.error('We can\'t brew an already shortened URL', {
           theme: "outline", 
@@ -212,7 +197,7 @@ export default {
       }
 
       if(banned) {
-        this.disabled = !this.disabled;
+        this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
         this.form.url = '';
         this.$toasted.error('We don\'t brew dirty links...', {
           theme: "outline", 
@@ -224,7 +209,7 @@ export default {
 
       this.exists(slug).then(res => {
         if(res) {
-          this.disabled = !this.disabled;
+          this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
           this.$toasted.clear();
           this.$toasted.error('Brew name already exists', {
             theme: "outline", 
@@ -254,7 +239,7 @@ export default {
             this.$store.dispatch('setUrl', response.data);
             this.form.slug = '';
             this.form.url  = '';
-            this.disabled = !this.disabled;
+            this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
 
             this.$toasted.success(response.data.message, {
               theme: "outline", 
@@ -263,7 +248,7 @@ export default {
             });
 
           }).catch(error => {
-            this.disabled = !this.disabled;
+             this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
             setTimeout(() => {
               this.$store.dispatch('clearLoader');
             }, 2000);
@@ -286,9 +271,6 @@ export default {
       windowReference.location = `/${data.slug}`;
     },
 
-    setFocus(focus) {
-      this.isFocused = focus;
-    },
 
     handleScroll(el) {
       if((el.srcElement.offsetHeight + el.srcElement.scrollTop) >= el.srcElement.scrollHeight) {

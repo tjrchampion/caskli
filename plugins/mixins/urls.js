@@ -14,7 +14,8 @@ const Date = {
           short: 'getShort',
           banned: 'getBanned',
           loader: 'loader',
-          pattern: 'getUrlPattern'
+          pattern: 'getUrlPattern',
+          submitDisabled: 'getSubmitDisabled'
         })
       }
     })

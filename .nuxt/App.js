@@ -7,9 +7,10 @@ import NuxtBuildIndicator from './components/nuxt-build-indicator'
 
 import '../assets/styles/app.scss'
 
+import _0095414c from '../layouts/primary.vue'
 import _6f6c098b from './layouts/default.vue'
 
-const layouts = { "_default": sanitizeComponent(_6f6c098b) }
+const layouts = { "_primary": sanitizeComponent(_0095414c),"_default": sanitizeComponent(_6f6c098b) }
 
 export default {
   render (h, props) {

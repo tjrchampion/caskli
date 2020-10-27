@@ -52,6 +52,8 @@ export default {
   ],
   
   plugins: [
+    {src: '~/plugins/bus.js'},
+    {src: '~/plugins/feather.js'},
     {src: '~/plugins/api.js'},
     {src: '~/plugins/scroll.js', ssr: false},
     //mixins

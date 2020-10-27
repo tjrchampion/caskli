@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const state = () => ({
   appUrl: process.env.APP_URL,
+  submitDisabled: false,
   urls: [],
   page: 1,
   pageCount: null,
@@ -36,6 +37,9 @@ export const state = () => ({
 export const mutations = {
   SET_URL(state, url) {
     state.urls.unshift(url);
+  },
+  SET_SUBMIT_DISABLED(state, bool) {
+    state.submitDisabled = bool;
   },
   SET_PAGE(state, page) {
     state.page = page;
@@ -102,6 +106,9 @@ export const actions = {
   },
   setUrlCount({ commit }, data) {
     commit('SET_URL_COUNT', data);
+  },
+  setSubmitDisabled({ commit }, bool) {
+    commit('SET_SUBMIT_DISABLED', bool);
   }
 }
 
@@ -126,6 +133,9 @@ export const getters = {
   },
   getUrlPattern() {
     return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i
+  },
+  getSubmitDisabled(state) {
+    return state.submitDisabled;
   },
   loader() {
     return {
