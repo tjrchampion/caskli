@@ -46,7 +46,7 @@ export default {
   manifest: {
     name: 'Csk.li',
     lang: 'en',
-    start_url: '/',
+    start_url: '/dashboard',
     useWebmanifestExtension: true
   },
 
