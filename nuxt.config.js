@@ -44,9 +44,9 @@ export default {
   },
 
   manifest: {
-    name: 'My Awesome App',
+    name: 'Csk.li',
     lang: 'en',
-    start_url: '/dashboard',
+    start_url: '/',
     useWebmanifestExtension: true
   },
 
