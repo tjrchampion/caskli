@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { mapGetters, mapMutations } from 'vuex'
 
-const Date = {
+const URLs = {
   namespaced: true,
   install(Vue, options) {
     Vue.mixin({
@@ -22,4 +22,4 @@ const Date = {
   }
 }
 
-Vue.use(Date)
+Vue.use(URLs)

@@ -5,12 +5,13 @@
 
     <div class="empty__urls" v-if="urls.length < 1">
       <span>
-        <coffee-icon size="1x"></coffee-icon> Nothing here. Try brewing a URL.
+        <coffee-icon size="1x"></coffee-icon> Nothing here. Try brewing a URL or
+        <a href="/" @click.prevent="$fetch">Refresh Brews.</a>
       </span>
     </div>
 
     <div class="container">
-      <div class="grid" ref="grid" @scroll="handleScroll">
+      <div class="grid disable-scrollbars" ref="grid" @scroll="handleScroll">
         <div class="grid__item" v-for="(url, index) in urls" :key="index">
           <div v-if="!url.isLoading" class="url link__item">
             <!-- :style="`background: #${parse(url.meta).colour}`" -->
@@ -26,12 +27,12 @@
             </article>
 
             <div class="link__actions">
-              <a href="/" class="external" style="background:none; border:none;" :disabled="copied == true" @click.prevent="copy(url.slug)">
+              <a href="/" class="external" aria-label="Copy URL" style="background:none; border:none;" :disabled="copied == true" @click.prevent="copy(url.slug)">
                 <span class="external__icon">
                   <copy-icon size="1.3x"></copy-icon>
                 </span>
               </a>
-              <a href="/" class="external" target="_blank" @click.prevent="updateClick(url)">
+              <a href="/" class="external" target="_blank" aria-label="Go to URL" @click.prevent="updateClick(url)">
                 <span class="external__icon">
                   <external-link-icon size="1.3x"></external-link-icon>
                 </span>
@@ -42,7 +43,7 @@
               Generating...
           </div>
         </div>
-        <button v-if="!canScroll && page !== pageCount && urls.length > 10" class="btn__load" @click="get">Get more brews</button>
+        <button v-if="!canScroll && page !== pageCount && urls.length > 10" class="btn__load" @click="get" aria-label="Get more Brews">Get more brews</button>
       </div>
     </div>
 
@@ -55,6 +56,7 @@ import appendHttp from '../api/append-http';
 import HeaderBar from '../components/HeaderBar';
 
 export default {
+  middleware: 'auth',
   components: {
     HeaderBar
   },
@@ -64,10 +66,32 @@ export default {
       bottom: false,
       canScroll: false,
       form: {
+        user_id:  null,
         slug: '',
         url: ''
       }
     }
+  },
+
+  async fetch() {
+
+    try {
+
+      let response = await this.$axios.$get(`/api`, {
+        params: {
+          page: this.page,
+        },
+      });
+
+      this.$store.dispatch('setUrls', response.urls);
+      this.$store.dispatch('setPage', response.pageCount);
+
+    } catch(err) {
+      console.log(err);
+    }
+
+
+
   },
 
   mounted() {
@@ -121,7 +145,11 @@ export default {
         });
 
       } catch(err) {
-        console.log(err);
+        this.$toasted.error('Sorry cannot copy this URL.', {
+          theme: "outline", 
+          position: "bottom-center", 
+          duration : 5000
+        });
       }
     },
 
@@ -139,14 +167,18 @@ export default {
         }
         return false;
       } catch(err) {
-        console.log(err)
+        this.$toasted.error('could not check if URL exists!', {
+          theme: "outline", 
+          position: "bottom-center", 
+          duration : 5000
+        });
       }
     
     },
 
     async get(){
       let page = this.page;
-      await this.$axios.$get('/api', {
+      await this.$axios.$get(`/api/${this.loggedInUser.id}`, {
         params: {
           page: page +=1,
         }
@@ -155,31 +187,37 @@ export default {
         this.$store.dispatch('setPage', page);
         this.bottom = false;
       }).catch(e => {
-        console.log(e)
+        this.$toasted.error('Could not find URL!', {
+          theme: "outline", 
+          position: "bottom-center", 
+          duration : 5000
+        });
       });
     },
 
     async submit() {
+
+      this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
 
       if(this.form.url == '') {
         return
       }
 
       let slug = this.form.slug.replace(/\s/g, '');
-
+      
       this.form.slug = slug;
+      this.form.user_id = this.loggedInUser.id;
 
       if(this.form.slug.length > 12) {
+        this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
+        this.$toasted.clear();
         this.$toasted.error('Brew name can\'t be more than 12 characters', {
           theme: "outline", 
           position: "bottom-center", 
           duration : 5000
         });
-        this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
         return;
       }
-
-      this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
 
       let host = new URL(appendHttp(this.form.url)).host;
       let banned = this.banned.find(o => o.parent_domain === host);
@@ -188,6 +226,7 @@ export default {
       if(short) {
         this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
         this.form.url = '';
+        this.$toasted.clear();
         this.$toasted.error('We can\'t brew an already shortened URL', {
           theme: "outline", 
           position: "bottom-center", 
@@ -199,6 +238,7 @@ export default {
       if(banned) {
         this.$store.dispatch('setSubmitDisabled', !this.submitDisabled);
         this.form.url = '';
+        this.$toasted.clear();
         this.$toasted.error('We don\'t brew dirty links...', {
           theme: "outline", 
           position: "bottom-center", 

@@ -19,6 +19,7 @@
         }        
         .field-group {
             margin-bottom:  1rem;
+            label { position: absolute; opacity: 0; height: 0 !important; margin: 0; }
             input {
                 width: 100%;
                 border: 3px solid #c0c0c0;
@@ -30,14 +31,14 @@
                 background: rgba(255, 255, 255, 0.03);
                 &:focus {
                     outline: none;
-                    border: 3px solid slateblue;
+                    border: 3px solid $brand-color;
                     transition: 0.3s all;
                 }
             }
         }
         button {
             border: 0;
-            background: slateblue;
+            background: $brand-color;
             padding: 1rem;
             color: white;
         }

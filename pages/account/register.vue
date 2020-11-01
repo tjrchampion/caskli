@@ -1,29 +1,29 @@
 <template>
   <div class="container">
 
-    <form id="login">
+    <form id="login" @submit.prevent="submit">
 
       <fieldset>
         <legend>
-          <img src="~/assets/images/gt.svg" alt="geektu.be">
+           <a href="/" aria-label="Return Home"><img src="~/assets/images/csk.svg" alt="csk.li"></a>
         </legend> 
 
         <div class="field-group">
-          <input type="text" id="fullname" placeholder="Full name">
+          <label for="fullname">Full Name</label>
+          <input v-model="form.fullname" type="text" id="fullname" placeholder="Full name">
         </div>
         
         <div class="field-group">
-          <input type="text" placeholder="Email address">
+          <label for="email">Email</label>
+          <input v-model="form.email" type="text" id="email" placeholder="Email address">
         </div>
         <div class="field-group">
-          <input type="text" placeholder="Password">
+          <label for="password">Password</label>
+          <input v-model="form.password" type="password" id="password" placeholder="Password">
         </div>
-        <div class="field-group">
-          <input type="text" placeholder="Confirm password">
-        </div>
-        <button type="submit"><key-icon size="1x" /> Register</button>
+        <button type="submit" aria-label="Register"><key-icon size="1x" /> Register</button>
 
-        <a href="/account/login" style="padding: 1rem;">Already have an account? Login now.</a>
+        <a href="/account/login" style="padding: 1rem;" aria-label="Login">Already have an account? Login now.</a>
 
       </fieldset>
 
@@ -36,7 +36,40 @@
 
 <script>
 export default {
+  middleware: 'guest',
   name: 'Register',
-  layout: 'primary'
+  layout: 'primary',
+  data() {
+    return {
+      form: {
+        email: '',
+        fullname: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+
+    async submit() {
+      try {
+        let response = await this.$axios.post('/api/account/register', this.form);
+        this.$toasted.success(response.data.message, {
+          theme: "outline", 
+          position: "bottom-center", 
+          duration : 5000
+        });
+
+        this.$router.push({path: '/account/login'});
+        
+      } catch (err) {
+        this.$toasted.error(err.response.data.errors, {
+          theme: "outline", 
+          position: "bottom-center", 
+          duration : 5000
+        });
+      }
+    }
+
+  }
 }
 </script>

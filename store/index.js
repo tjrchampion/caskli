@@ -1,6 +1,9 @@
 import axios from 'axios';
+import banned from '../static/banned.json';
 
 export const state = () => ({
+  loggedIn: false,
+  user: {},
   appUrl: process.env.APP_URL,
   submitDisabled: false,
   urls: [],
@@ -70,24 +73,7 @@ export const mutations = {
 
 export const actions = {
   nuxtServerInit ({ commit }, { req }) {
-
-    return this.$axios.get('/api', {
-      params: {
-        page: state.page,
-      },
-    }).then((response) => {
-
-      commit('SET_URLS', response.data.urls);
-      commit('SET_PAGE_COUNT', response.data.pageCount);
-
-      return this.$axios.get('https://raw.githubusercontent.com/bryput/porn-site-list/master/sites.json').then((response) => {
-        commit('SET_BANNED', response.data);
-      });
-
-    }).catch((error) => {
-      console.warn('probably an issue connecting to the API');
-      console.warn(error);
-    });
+    commit('SET_BANNED', banned);
   },
   setUrl({ commit }, url) {
     commit('SET_URL', url);
@@ -113,6 +99,14 @@ export const actions = {
 }
 
 export const getters = {
+  isAuthenticated(state) {
+    return state.auth.loggedIn
+  },
+
+  loggedInUser(state) {
+    return state.auth.user
+  },
+
   getAppUrl(state) {
     return state.appUrl;
   },

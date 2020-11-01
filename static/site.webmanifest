@@ -1,6 +1,7 @@
 {
-    "name": "Geektu.be",
-    "short_name": "Geektu.be",
+    "name": "Csk.ki - Brew Short URLs",
+    "short_name": "csk.li",
+    "start_url": "/",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +14,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
+    "theme_color": "#614BE6",
     "background_color": "#ffffff",
     "display": "standalone"
 }

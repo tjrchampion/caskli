@@ -15,11 +15,16 @@ import { createStore } from './store.js'
 
 import nuxt_plugin_toast_68280418 from 'nuxt_plugin_toast_68280418' // Source: ./toast.js (mode: 'client')
 import nuxt_plugin_axios_00889d76 from 'nuxt_plugin_axios_00889d76' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_workbox_fd362dbe from 'nuxt_plugin_workbox_fd362dbe' // Source: ./workbox.js (mode: 'client')
+import nuxt_plugin_meta_3ea301f9 from 'nuxt_plugin_meta_3ea301f9' // Source: ./pwa/meta.js (mode: 'all')
+import nuxt_plugin_icons_f68cf554 from 'nuxt_plugin_icons_f68cf554' // Source: ./pwa/icons.js (mode: 'all')
 import nuxt_plugin_bus_74525326 from 'nuxt_plugin_bus_74525326' // Source: ../plugins/bus.js (mode: 'all')
 import nuxt_plugin_feather_6a7f4a6a from 'nuxt_plugin_feather_6a7f4a6a' // Source: ../plugins/feather.js (mode: 'all')
 import nuxt_plugin_api_785206da from 'nuxt_plugin_api_785206da' // Source: ../plugins/api.js (mode: 'all')
 import nuxt_plugin_scroll_ee90a558 from 'nuxt_plugin_scroll_ee90a558' // Source: ../plugins/scroll.js (mode: 'client')
 import nuxt_plugin_urls_868b4ae8 from 'nuxt_plugin_urls_868b4ae8' // Source: ../plugins/mixins/urls.js (mode: 'all')
+import nuxt_plugin_auth_bf700170 from 'nuxt_plugin_auth_bf700170' // Source: ../plugins/mixins/auth.js (mode: 'all')
+import nuxt_plugin_plugin_34c7f6c1 from 'nuxt_plugin_plugin_34c7f6c1' // Source: ./auth/plugin.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -72,7 +77,7 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"Geektu.be - Brew URLs","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"msapplication-TileColor","content":"#ffffff"},{"name":"theme-color","content":"#ffffff"},{"name":"apple-mobile-web-app-status-bar-style","content":"default"},{"hid":"","name":"","content":""}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico?v2"},{"rel":"apple-touch-icon","sizes":"180x180","href":"\u002Fapple-touch-icon.png"},{"rel":"icon","type":"image\u002Fpng","sizes":"32x32","href":"\u002Ffavicon-32x32.png"},{"rel":"icon","type":"image\u002Fpng","sizes":"16x16","href":"\u002Ffavicon-16x16.png"},{"rel":"manifest","href":"\u002Fsite.webmanifest"},{"rel":"mask-icon","href":"\u002Fsafari-pinned-tab.svg","color":"#c5442b"}],"style":[],"script":[]},
+    head: {"title":"Caskli - Brew short URLs","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"msapplication-TileColor","content":"#ffffff"},{"name":"theme-color","content":"#ffffff"},{"name":"apple-mobile-web-app-status-bar-style","content":"default"},{"name":"description","content":"Brew URLs with Csk.li - Another URL shortner. "},{"hid":"Caskli - Brew URLs","name":"Caskli - Brew URLs","content":"Caskli - Another URL shortner"}],"link":[{"rel":"stylesheet","href":"https:\u002F\u002Ffonts.googleapis.com\u002Fcss2?family=Roboto+Mono:wght@400;500&display=swap"},{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico?v2"},{"rel":"apple-touch-icon","sizes":"180x180","href":"\u002Fapple-touch-icon.png"},{"rel":"icon","type":"image\u002Fpng","sizes":"32x32","href":"\u002Ffavicon-32x32.png"},{"rel":"icon","type":"image\u002Fpng","sizes":"16x16","href":"\u002Ffavicon-16x16.png"},{"rel":"manifest","href":"\u002Fsite.webmanifest"},{"rel":"mask-icon","href":"\u002Fsafari-pinned-tab.svg","color":"#c5442b"}],"style":[],"script":[]},
 
     store,
     router,
@@ -209,6 +214,18 @@ async function createApp(ssrContext, config = {}) {
     await nuxt_plugin_axios_00889d76(app.context, inject)
   }
 
+  if (process.client && typeof nuxt_plugin_workbox_fd362dbe === 'function') {
+    await nuxt_plugin_workbox_fd362dbe(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_meta_3ea301f9 === 'function') {
+    await nuxt_plugin_meta_3ea301f9(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_icons_f68cf554 === 'function') {
+    await nuxt_plugin_icons_f68cf554(app.context, inject)
+  }
+
   if (typeof nuxt_plugin_bus_74525326 === 'function') {
     await nuxt_plugin_bus_74525326(app.context, inject)
   }
@@ -227,6 +244,14 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_urls_868b4ae8 === 'function') {
     await nuxt_plugin_urls_868b4ae8(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_auth_bf700170 === 'function') {
+    await nuxt_plugin_auth_bf700170(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_plugin_34c7f6c1 === 'function') {
+    await nuxt_plugin_plugin_34c7f6c1(app.context, inject)
   }
 
   // Lock enablePreview in context
