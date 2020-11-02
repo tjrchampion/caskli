@@ -233,11 +233,8 @@ app.post('/account/register', jsonParser, async (req, res, next)   => {
     connection.query('INSERT INTO users (fullname, email, password, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())', [fullname, email, hashPassword], (err, results, fields) => {
       if (!err) {
 
-        if(process.env.MAILGUN_DOMAIN === '' || process.env.MAILGUN_DOMAIN === undefined) {
-          mail(email, `Welcome to csk.li ${fullname}`, html);
-        }
-
-
+        mail(email, `Welcome to csk.li ${fullname}`, html);
+        
         return res.status(200).json({
           status: true,
           message: 'User account created!',
