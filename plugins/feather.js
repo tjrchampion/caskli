@@ -9,7 +9,8 @@ import {
   KeyIcon, 
   LogInIcon,
   LogOutIcon,
-  UserIcon
+  UserIcon,
+  Trash2Icon
 } from 'vue-feather-icons';
 
 Vue.component("plus-icon", PlusIcon);
@@ -20,3 +21,4 @@ Vue.component("key-icon", KeyIcon);
 Vue.component("login-icon", LogInIcon);
 Vue.component("logout-icon", LogOutIcon);
 Vue.component("user-icon", UserIcon);
+Vue.component("trash-icon", Trash2Icon);

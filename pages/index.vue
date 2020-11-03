@@ -29,14 +29,21 @@
             <div class="link__actions">
               <a href="/" class="external" aria-label="Copy URL" style="background:none; border:none;" :disabled="copied == true" @click.prevent="copy(url.slug)">
                 <span class="external__icon">
-                  <copy-icon size="1.3x"></copy-icon>
+                  <copy-icon size="1x"></copy-icon>
                 </span>
               </a>
               <a href="/" class="external" target="_blank" aria-label="Go to URL" @click.prevent="updateClick(url)">
                 <span class="external__icon">
-                  <external-link-icon size="1.3x"></external-link-icon>
+                  <external-link-icon size="1x"></external-link-icon>
                 </span>
               </a>
+              <a href="/" class="external" target="_blank" aria-label="Go to URL" @click.prevent="remove(url)">
+                <span class="external__icon">
+                  <trash-icon size="1x"></trash-icon>
+                </span>
+              </a>
+
+
             </div>
           </div>
           <div class="isloading" v-if="url.isLoading">
@@ -52,6 +59,7 @@
 
 <script>
 import moment from 'moment';
+import Swal from 'sweetalert2';
 import appendHttp from '../api/append-http';
 import HeaderBar from '../components/HeaderBar';
 
@@ -82,9 +90,8 @@ export default {
           page: this.page,
         },
       });
-
       this.$store.dispatch('setUrls', response.urls);
-      this.$store.dispatch('setPage', response.pageCount);
+      this.$store.dispatch('setPageCount', response.pageCount);
 
     } catch(err) {
       console.log(err);
@@ -178,7 +185,7 @@ export default {
 
     async get(){
       let page = this.page;
-      await this.$axios.$get(`/api/${this.loggedInUser.id}`, {
+      await this.$axios.$get(`/api`, {
         params: {
           page: page +=1,
         }
@@ -311,6 +318,34 @@ export default {
       windowReference.location = `/${data.slug}`;
     },
 
+    async remove(url) {
+      try {
+
+
+          Swal.fire({
+            theme: 'minimal',
+            heightAuto: false,
+            title: 'Are you sure?',
+            icon: 'warning',
+            html: `<strong>You are about to delete this brew.</strong>`,
+            showCloseButton: false,
+            showCancelButton: true,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showConfirmButton: true,
+            confirmButtonText: 'Yes delete brew.',
+            cancelButtonText: 'No keep it!'
+          }).then((result) => {
+            if(result.value) {
+                //let response = await this.$axios.delete('/api', url);
+
+            }
+          });
+
+      } catch(err) {
+        this.$toasted.error('cannot remove this URL');
+      }
+    },
 
     handleScroll(el) {
       if((el.srcElement.offsetHeight + el.srcElement.scrollTop) >= el.srcElement.scrollHeight) {

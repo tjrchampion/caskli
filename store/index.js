@@ -84,6 +84,9 @@ export const actions = {
   setPage({ commit }, page) {
     commit('SET_PAGE', page);
   },
+  setPageCount({ commit }, count) {
+    commit('SET_PAGE_COUNT', count);
+  },
   clearLoader({commit}) {
     commit('CLEAR_LOADER');
   },

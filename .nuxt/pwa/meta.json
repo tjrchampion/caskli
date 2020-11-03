@@ -1,5 +1,5 @@
 {
-  "title": "My Awesome App",
+  "title": "Csk.li",
   "meta": [
     {
       "hid": "charset",
@@ -18,7 +18,7 @@
     {
       "hid": "apple-mobile-web-app-title",
       "name": "apple-mobile-web-app-title",
-      "content": "My Awesome App"
+      "content": "Csk.li"
     },
     {
       "hid": "og:type",
@@ -30,13 +30,13 @@
       "hid": "og:title",
       "name": "og:title",
       "property": "og:title",
-      "content": "My Awesome App"
+      "content": "Csk.li"
     },
     {
       "hid": "og:site_name",
       "name": "og:site_name",
       "property": "og:site_name",
-      "content": "My Awesome App"
+      "content": "Csk.li"
     }
   ],
   "link": [
@@ -51,7 +51,7 @@
     },
     {
       "rel": "manifest",
-      "href": "/_nuxt/manifest.2626c7b2.webmanifest",
+      "href": "/_nuxt/manifest.69c850e3.webmanifest",
       "hid": "manifest"
     }
   ],
