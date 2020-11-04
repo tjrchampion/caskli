@@ -68,6 +68,7 @@ export default {
     "scope": "/",
     "start_url": "/",
     "app_name": "Caskli",
+    "name": "Caskli",
     "short_name": "csk.li",
     "description": "Caskli - Brew Short URLs",
     "icons": [
