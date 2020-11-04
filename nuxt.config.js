@@ -5,10 +5,11 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'msapplication-TileColor', content: '#ffffff' },
+      { name: 'msapplication-TileColor', content: '#614BE6' },
       { name: 'theme-color', content: '#614BE6' },
-      { name:  'apple-mobile-web-app-status-bar-style', content: 'default'},
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent'},
       { name: 'description', content: 'Brew URLs with Csk.li - Another URL shortner. ' },
+      { name: 'application-name', content: 'Caskli' },
       {
         hid: process.env.npm_package_description || 'Caskli - Brew URLs',
         name: process.env.npm_package_description || 'Caskli - Brew URLs',
@@ -43,18 +44,16 @@ export default {
     ]
   },
 
-  manifest: {
-    name: 'Csk.li',
-    lang: 'en',
-    start_url: '/',
-    useWebmanifestExtension: true
-  },
-
   pwa: {
+    meta: {
+      mobileAppIOS: true,
+      appleStatusBarStyle: 'black-translucent'
+    },
     icon: {
       iconSrc: '~/static/icon.png'
     },
     workbox: {
+      importScripts : '@/plugins/bg-sync.js',
       enabled: true,
       config: {
         debug: true
@@ -62,7 +61,41 @@ export default {
     }
   },
 
+  manifest: {
+    "theme_color": "#614BE6",
+    "background_color": "#614BE6",
+    "display": "fullscreen",
+    "scope": "/",
+    "start_url": "/",
+    "app_name": "Caskli",
+    "short_name": "csk.li",
+    "description": "Caskli - Brew Short URLs",
+    "icons": [
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "lang": "en"
+  },
 
+  
   server: {
     port: process.env.PORT || 1337, // default: 3000
     host: '0.0.0.0', // default: localhost,

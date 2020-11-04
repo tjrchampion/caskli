@@ -142,7 +142,7 @@ app.get('/account/me', verifyToken, async (req, res, next)   => {
 
 
 
-app.get('/:id', (req, res, next) => {
+app.get('/:id',(req, res, next) => {
   connection.query('SELECT * FROM urls WHERE slug = ?',[req.params.id], (err, rows, fields) => {
     if (!err) {
       res.status(200).json({
@@ -173,6 +173,28 @@ app.put('/:id', jsonParser, async (req, res, next)   => {
   })
 
 })
+
+
+app.delete('/:id', jsonParser, verifyToken, async (req, res, next)   => {
+  jwt.verify(req.token, process.env.JWT_SECRET, (err, authData) => {
+    if(err) {
+      return res.status(403).json({
+        status: false,
+        message: 'Not authorised'
+      });
+    } else {
+      connection.query('DELETE FROM urls WHERE id = ? AND user_id = ?', [req.params.id, authData.user.id], (err, rows, fields) => {
+        if (!err) {
+          res.status(200).json({
+            success: true
+          });
+        } else {
+          next(err);
+        }
+      })
+    }
+  });
+});
 
 app.get('/', verifyToken, async (req, res, next) => {
 
@@ -286,7 +308,6 @@ app.post('/account/login', jsonParser, async (req, res) => {
   })
 
 });
-
 
 
 app.post('/account/logout', jsonParser, verifyToken, async (req, res) => {

@@ -4,6 +4,7 @@
     background: $brand-color;
     overflow: auto;
     padding: 1rem;
+    z-index: 100;
     .navigation {
         position: relative;
         z-index: 100;
@@ -38,6 +39,8 @@
         height: 100%;
         //transition: 0.3s all;
         background: white;
+        -webkit-appearance: none;
+        border-radius: 0;
         &:focus {
             outline: none;
             background: rgba(255,255,255, 0.8);

@@ -1,5 +1,5 @@
 <template>
-  <div id="geektube">
+  <main id="geektube">
 
     <header-bar ref="shtn" :form="form" />
 
@@ -10,7 +10,7 @@
       </span>
     </div>
 
-    <div class="container">
+    <div id="gtprimary" class="container">
       <div class="grid disable-scrollbars" ref="grid" @scroll="handleScroll">
         <div class="grid__item" v-for="(url, index) in urls" :key="index">
           <div v-if="!url.isLoading" class="url link__item">
@@ -37,7 +37,7 @@
                   <external-link-icon size="1x"></external-link-icon>
                 </span>
               </a>
-              <a href="/" class="external" target="_blank" aria-label="Go to URL" @click.prevent="remove(url)">
+              <a href="/" class="external" target="_blank" aria-label="Go to URL" @click.prevent="remove(url.id)">
                 <span class="external__icon">
                   <trash-icon size="1x"></trash-icon>
                 </span>
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-  </div>
+  </main>
 </template>
 
 <script>
@@ -318,16 +318,13 @@ export default {
       windowReference.location = `/${data.slug}`;
     },
 
-    async remove(url) {
+    async remove(id) {
       try {
 
-
-          Swal.fire({
-            theme: 'minimal',
+          await Swal.fire({
             heightAuto: false,
             title: 'Are you sure?',
-            icon: 'warning',
-            html: `<strong>You are about to delete this brew.</strong>`,
+            html: `You are about to delete this brew.`,
             showCloseButton: false,
             showCancelButton: true,
             allowEscapeKey: false,
@@ -337,13 +334,15 @@ export default {
             cancelButtonText: 'No keep it!'
           }).then((result) => {
             if(result.value) {
-                //let response = await this.$axios.delete('/api', url);
+                this.$axios.delete(`/api/${id}`).then((res) => {
+                  this.$store.dispatch('clearIndex', id);
+                });
 
             }
           });
 
       } catch(err) {
-        this.$toasted.error('cannot remove this URL');
+        this.$toasted.error('cannot remove this URL').goAway(5000);
       }
     },
 

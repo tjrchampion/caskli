@@ -5,7 +5,7 @@
 
       <fieldset>
         <legend>
-           <a href="/" aria-label="Return Home"><img src="~/assets/images/csk.svg" alt="csk.li"></a>
+           <a href="/" aria-label="Return Home"><img src="/csk.svg" width="100%" height="100%" alt="csk.li"></a>
         </legend> 
 
         <div class="field-group">

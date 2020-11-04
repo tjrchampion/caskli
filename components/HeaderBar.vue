@@ -1,16 +1,16 @@
 <template>
   <header class="header__wrap">
-
-    <ul class="navigation">
-      <li v-if="!isAuthenticated"><a href="/account/login" aria-label="Go to login"><login-icon size="1x" /> Login</a></li>
-      <li v-if="isAuthenticated"><user-icon size="1x" /> Welcome {{loggedInUser.fullname}}</li>
-      <li v-if="isAuthenticated"><a href="/" aria-label="Logout" @click="logout"><logout-icon size="1x" /> Logout</a></li>
-      <li v-if="!isAuthenticated"><a href="/account/register" aria-label="Go to Register"><key-icon size="1x" /> Register</a></li>
-    </ul>
-
+    <nav>
+      <ul class="navigation">
+        <li v-if="!isAuthenticated"><a href="/account/login" aria-label="Go to login"><login-icon size="1x" /> Login</a></li>
+        <li v-if="isAuthenticated"><user-icon size="1x" /> Welcome {{loggedInUser.fullname}}</li>
+        <li v-if="isAuthenticated"><a href="/" aria-label="Logout" @click="logout"><logout-icon size="1x" /> Logout</a></li>
+        <li v-if="!isAuthenticated"><a href="/account/register" aria-label="Go to Register"><key-icon size="1x" /> Register</a></li>
+      </ul>
+    </nav>
     <form @submit.prevent="submit" ref="shtn" id="shtn"> 
       <div class="gt-logo">
-        <img src="~/assets/images/csk.svg" width="100%" height="100%" alt="geektu.be">
+        <img src="csk.svg" width="100%" height="100%" alt="geektu.be">
       </div>
       <div>
         <label for="slug">Brew Name</label>

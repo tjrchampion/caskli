@@ -4,7 +4,7 @@
             "outputFile": "/Users/tomchampion/Development/Web/geektu.be/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v23/values-v23.xml",
             "map": [
                 {
-                    "source": "/Users/tomchampion/.gradle/caches/transforms-2/files-2.1/917631fc60eeb5508ebbaa0be52005f8/appcompat-v7-27.0.2/res/values-v23/values-v23.xml",
+                    "source": "/Users/tomchampion/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/b37615f29ab1ba8de3f5fef7a9fe5a3a/res/values-v23/values-v23.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,19,32,33,34,35,36",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4",

@@ -1,5 +1,5 @@
 {
-    "name": "geektu-be",
+    "name": "caskli",
     "scripts": {
         "dev": "nuxt",
         "build": "nuxt build",

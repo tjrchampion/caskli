@@ -4,7 +4,7 @@
             "outputFile": "/Users/tomchampion/Development/Web/geektu.be/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-bn/values-bn.xml",
             "map": [
                 {
-                    "source": "/Users/tomchampion/.gradle/caches/transforms-2/files-2.1/551d8a30a1e963ce0f48ed33d8afafce/support-compat-27.0.2/res/values-bn/values-bn.xml",
+                    "source": "/Users/tomchampion/.gradle/caches/transforms-1/files-1.1/support-compat-27.0.2.aar/ce266418d6e545649d9984d54d524366/res/values-bn/values-bn.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/tomchampion/.gradle/caches/transforms-2/files-2.1/917631fc60eeb5508ebbaa0be52005f8/appcompat-v7-27.0.2/res/values-bn/values-bn.xml",
+                    "source": "/Users/tomchampion/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/b37615f29ab1ba8de3f5fef7a9fe5a3a/res/values-bn/values-bn.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

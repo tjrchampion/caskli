@@ -59,6 +59,10 @@ export const mutations = {
   SET_BANNED(state, banned) {
     state.banned = banned;
   },
+  CLEAR_INDEX(state, id) {
+    let filtered = state.urls.filter(u => u.id !== id);
+    state.urls = filtered;
+  },
   SET_URL_COUNT(state, data) {
     return state.urls.find(url => {
       if(url.id === data.id) {
@@ -98,6 +102,9 @@ export const actions = {
   },
   setSubmitDisabled({ commit }, bool) {
     commit('SET_SUBMIT_DISABLED', bool);
+  },
+  clearIndex({ commit }, id) {
+    commit('CLEAR_INDEX', id);
   }
 }
 
