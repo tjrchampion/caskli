@@ -53,10 +53,10 @@ export default {
       iconSrc: '~/static/icon.png'
     },
     workbox: {
-      importScripts : '@/plugins/bg-sync.js',
+      //importScripts : '@/plugins/bg-sync.js',
       enabled: true,
       config: {
-        debug: true
+        //debug: true
       }
     }
   },
