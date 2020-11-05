@@ -3,28 +3,24 @@
     "name": "account-login",
     "path": "/account/login",
     "component": "/Users/tomchampion/Development/Web/geektu.be/pages/account/login.vue",
-    "chunkName": "pages/account/login",
-    "_name": "_72d0a5ee"
+    "chunkName": "pages/account/login"
   },
   {
     "name": "account-register",
     "path": "/account/register",
     "component": "/Users/tomchampion/Development/Web/geektu.be/pages/account/register.vue",
-    "chunkName": "pages/account/register",
-    "_name": "_3622f7a4"
+    "chunkName": "pages/account/register"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/tomchampion/Development/Web/geektu.be/pages/index.vue",
-    "chunkName": "pages/index",
-    "_name": "_1c4df18e"
+    "chunkName": "pages/index"
   },
   {
     "name": "id",
     "path": "/:id",
     "component": "/Users/tomchampion/Development/Web/geektu.be/pages/_id.vue",
-    "chunkName": "pages/_id",
-    "_name": "_677cf83e"
+    "chunkName": "pages/_id"
   }
 ]
