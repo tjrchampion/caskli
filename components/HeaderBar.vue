@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span class="is-offline" v-if="$nuxt.isOffline">Your are currently offline. Please check your internet connection.</span>
+    <span class="is-offline" v-if="$nuxt.isOffline">You're currently offline. Please check you have an active internet connection.</span>
     <header class="header__wrap">
       <nav>
         <ul class="navigation">
