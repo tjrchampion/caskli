@@ -14,7 +14,15 @@
         color: white;
         li { 
             margin: 0 0 0 1rem;
-            a { color: white; }
+            display: flex;
+            align-items: center;
+            .feather { margin-right: 0.25rem; }
+            a { 
+                display: flex;
+                align-items: center;
+                color: white;
+                .feather { margin-right: 0.25rem; }
+            }
          }
     }
 }

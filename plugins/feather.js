@@ -10,7 +10,8 @@ import {
   LogInIcon,
   LogOutIcon,
   UserIcon,
-  Trash2Icon
+  Trash2Icon,
+  RefreshCwIcon
 } from 'vue-feather-icons';
 
 Vue.component("plus-icon", PlusIcon);
@@ -22,3 +23,4 @@ Vue.component("login-icon", LogInIcon);
 Vue.component("logout-icon", LogOutIcon);
 Vue.component("user-icon", UserIcon);
 Vue.component("trash-icon", Trash2Icon);
+Vue.component("refresh-cw", RefreshCwIcon);

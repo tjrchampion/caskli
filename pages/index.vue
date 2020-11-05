@@ -1,7 +1,7 @@
 <template>
   <main id="geektube">
 
-    <header-bar ref="shtn" :form="form" />
+    <header-bar ref="shtn" :form="form" :reload="() => $fetch()"/>
 
     <div class="empty__urls" v-if="urls.length < 1">
       <span>
@@ -82,9 +82,9 @@ export default {
   },
 
   async fetch() {
-
+    
     try {
-
+      this.$store.dispatch('clearUrls');
       let response = await this.$axios.$get(`/api`, {
         params: {
           page: this.page,
@@ -359,6 +359,10 @@ export default {
           });  
         }
       }
+    },
+
+    reload() {
+      alert('qeqweq');
     }
   
   },

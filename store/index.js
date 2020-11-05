@@ -63,6 +63,9 @@ export const mutations = {
     let filtered = state.urls.filter(u => u.id !== id);
     state.urls = filtered;
   },
+  CLEAR_URLS(state) {
+    state.urls = []
+  },
   SET_URL_COUNT(state, data) {
     return state.urls.find(url => {
       if(url.id === data.id) {
@@ -105,6 +108,9 @@ export const actions = {
   },
   clearIndex({ commit }, id) {
     commit('CLEAR_INDEX', id);
+  },
+  clearUrls({commit}) {
+    commit('CLEAR_URLS');
   }
 }
 
