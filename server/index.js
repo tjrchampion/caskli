@@ -28,8 +28,23 @@ async function start() {
   // parse application/json
   app.use(bodyParser.json())
 
+
+  if(process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+      if (req.header('x-forwarded-proto') !== 'https') {
+        res.redirect(`https://${req.header('host')}${req.url}`)
+      } else {
+        next()
+      }
+    })
+  }
+
   // Listen the server
   app.listen(port, host)
+
+
+
+
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true
