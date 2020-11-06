@@ -1,3 +1,5 @@
+import redirectSSL from 'redirect-ssl';
+
 export default {
 
   head: {
@@ -143,6 +145,9 @@ export default {
 
   serverMiddleware: [
     {path: '/api', handler: '~/api/index.js'},
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === 'production'
+    }),
   ],
 
   buildModules: [
