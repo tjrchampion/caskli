@@ -1,0 +1,17 @@
+{
+  "entry": "server.js",
+  "files": {
+    "pages/_id.js": "pages/_id.js",
+    "pages/account/login.js": "pages/account/login.js",
+    "pages/account/register.js": "pages/account/register.js",
+    "pages/index.js": "pages/index.js",
+    "server.js": "server.js"
+  },
+  "maps": {
+    "pages/_id.js": "pages/_id.js.map",
+    "pages/account/login.js": "pages/account/login.js.map",
+    "pages/account/register.js": "pages/account/register.js.map",
+    "pages/index.js": "pages/index.js.map",
+    "server.js": "server.js.map"
+  }
+}
