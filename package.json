@@ -36,6 +36,6 @@
     "devDependencies": {
         "node-sass": "^5.0.0",
         "psl": "^1.8.0",
-        "sass-loader": "^9.0.0"
+        "sass-loader": "^10.0.5"
     }
 }
