@@ -157,25 +157,6 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/toast',
-    '@nuxtjs/auth',
-    ['nuxt-twa-module', {
-      /* module options */
-      defaultUrl: 'https://csk.li',
-      hostName: 'csk.li',
-      applicationId: 'com.csk.li',
-      launcherName: 'Caskli',
-      versionCode: 1,
-      versionName: '1.0',
-      statusBarColor:'#614BE6',
-      // The sha256Fingerprints by is an array with one SHA-256 key string.
-      // But if you have multiple you can add them to the array. More information about the website asociation:
-      // https://developer.android.com/training/app-links/verify-site-associations#web-assoc
-      sha256Fingerprints: ['6F:52:FB:79:7B:E1:7B:6B:1D:15:91:E6:03:BA:7A:CE:F3:8B:75:D7:C6:1B:09:C0:34:BA:D8:99:5D:B4:4A:F6'],
-      /* optional */
-      /* overwrite default location for icon */
-      iconPath: '/static/icon.png',
-      /* Overwrite folder where to put .wellknown */
-      distFolder: '.nuxt/dist/client',
-    }]
+    '@nuxtjs/auth'
   ]
 }
